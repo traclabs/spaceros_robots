@@ -24,7 +24,7 @@ WORKDIR ${HOME_DIR}
 # spaceros_robots's dependencies
 # **********************************
 WORKDIR ${HOME_DIR}
-RUN mkdir -p ${HOME_DIR}/extra_deps_ws
+RUN mkdir -p ${HOME_DIR}/extra_deps_ws/src
 WORKDIR ${HOME_DIR}/extra_deps_ws
 
 # Generate repos file for moveit2 dependencies, excluding packages from Space ROS core.
@@ -38,7 +38,7 @@ RUN rosinstall_generator \
   > /tmp/extra_generated_pkgs.repos
 
 # Get the repositories required to simulate the robots, but not included in Space ROS
-RUN mkdir src && vcs import src < /tmp/extra_generated_pkgs.repos
+RUN vcs import src < /tmp/extra_generated_pkgs.repos
 
 # Install system dependencies
 # Build the dependencies workspace
@@ -47,10 +47,10 @@ RUN source ${HOME_DIR}/spaceros/install/setup.bash \
  && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release
 
 # Pull demos repos
-RUN mkdir -p ${HOME_DIR}/spaceros_robots_ws
+RUN mkdir -p ${HOME_DIR}/spaceros_robots_ws/src
 WORKDIR ${HOME_DIR}/spaceros_robots_ws
 COPY --chown=${USERNAME}:${USERNAME} ./config/demo_manual_pkgs.repos demo_manual_pkgs.repos
-RUN mkdir src && vcs import src < demo_manual_pkgs.repos
+RUN vcs import src < demo_manual_pkgs.repos
 
 # Build the demos workspace
 RUN source ${HOME_DIR}/extra_deps_ws/install/setup.bash &&  \
