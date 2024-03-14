@@ -56,7 +56,7 @@ RUN vcs import src < demo_manual_pkgs.repos
 RUN source ${HOME_DIR}/extra_deps_ws/install/setup.bash &&  \
     rosdep install --from-paths src --ignore-src -r -y && \
     colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release && \
-    echo '"source ${HOME_DIR}/spaceros_robots_ws/install/setup.bash"' >> ~/.bashrc
+    echo 'source "${HOME_DIR}/spaceros_robots_ws/install/setup.bash"' >> ~/.bashrc
         
 
 # Create an empty workdir so user can mount stuff if desired
