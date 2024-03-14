@@ -1,0 +1,51 @@
+{
+	"dockerFile": "Dockerfile",
+	"build": {
+		"args": {
+			"WORKSPACE": "${containerWorkspaceFolder}"
+		}
+	},
+	// Launch container as a non-root user
+	"remoteUser": "spaceros-user", # root
+	"runArgs": [
+		"--name=spaceros_robots_container",
+		"--env=DISPLAY=:1",
+		"--env=QT_X11_NO_MITSHM=1",
+		"--volume=/tmp/.X11-unix:/tmp/.X11-unix:rw",
+		"--env=XAUTHORITY=/tmp/.docker.xauth",
+//		"--volume=$XAUTH:$XAUTH",
+		"--network=host",
+		"--privileged",
+		"--cap-add=SYS_PTRACE",
+		"--security-opt=seccomp:unconfined",
+		"--security-opt=apparmor:unconfined"
+	],
+	"containerEnv": {
+		"DISPLAY": "${localEnv:DISPLAY}",
+		"LIBGL_ALWAYS_SOFTWARE": "1" // Needed for software rendering of opengl
+	},
+	// Set *default* container specific settings.json values on container create.
+	"settings": {
+		"terminal.integrated.profiles.linux": {
+			"zsh": {
+				"path": "/bin/zsh"
+			}
+		},
+		"terminal.integrated.defaultProfile.linux": "zsh"
+	},
+	"extensions": [
+		// "althack.ament-task-provider",
+		"DotJoshJohnson.xml",
+		"ms-azuretools.vscode-docker",
+		"ms-python.python",
+		"ms-vscode.cpptools",
+		"redhat.vscode-yaml",
+		"smilerobotics.urdf",
+		"streetsidesoftware.code-spell-checker",
+		"twxs.cmake",
+		"yzhang.markdown-all-in-one",
+		"zachflower.uncrustify"
+	],
+	"workspaceMount": "source=${localWorkspaceFolder},target=/home/spaceros-user/test_ws,type=bind",
+	"workspaceFolder": "/home/spaceros-user/test_ws"
+}
