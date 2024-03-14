@@ -1,0 +1,77 @@
+name: Building spaceros_robots image
+on:
+  workflow_dispatch:
+   # Push
+  pull_request:
+    branches:
+      - devel
+      
+env: 
+  # Use docker.io for DockerHub if empty
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+        
+      
+jobs:
+
+  build_brash:
+  
+    runs-on: ubuntu-20.04
+    permissions:
+      contents: read
+      packages: write
+      id-token: write      
+    steps:
+      # Checkout this repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Set up docker buildx (latest build magic)       
+      - name: Set up docker buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          driver: docker # Default is docker-container
+
+      # Log in to Docker registry
+      - name: Log into registry ${{env.REGISTRY}}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{env.REGISTRY}}
+          username: ${{github.actor}}
+          password: ${{secrets.GITHUB_TOKEN}}
+        
+      
+      # Extract metadata for docker
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{env.REGISTRY}}/${{env.IMAGE_NAME}}   
+          
+      # Note:  Here we could just use the docker-buildx action
+      # I copied and pasted this file from the brash_docker
+      # in which we cannot use that action because we have 03 different
+      # images to build, so we use the tags to differentiate between them
+      # the same way the Astrobee team does.
+      # If this repo only hosts the spaceros_robots image, then we can use
+      # the default action. If we were to store other images, then the approach
+      # below is an option
+          
+      # Call docker  build 
+      - name: Call docker  build
+        run: |
+          shopt -s expand_aliases        
+          docker build -f spaceros_robots.Dockerfile . -t spaceros_robots
+      
+      # Push spaceros demo image
+      # (not using build-and-push action as passing images is giving me trouble)
+      # local_tag="spaceros_robots"
+      - name: Push spaceros_robots
+        run: |
+          local_tag="latest" 
+          remote_tag="${{env.REGISTRY}}/${{env.IMAGE_NAME}}:${local_tag}"
+          docker tag $local_tag $remote_tag
+          docker push $remote_tag
+      
+      
