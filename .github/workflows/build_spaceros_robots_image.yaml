@@ -67,10 +67,11 @@ jobs:
       # Push spaceros demo image
       # (not using build-and-push action as passing images is giving me trouble)
       # local_tag="spaceros_robots"
+      # remote_tag="${{env.REGISTRY}}/${{env.IMAGE_NAME}}:${local_tag}"
       - name: Push spaceros_robots
         run: |
-          local_tag="latest" 
-          remote_tag="${{env.REGISTRY}}/${{env.IMAGE_NAME}}:${local_tag}"
+          local_tag="spaceros_robots" 
+          remote_tag="${{env.REGISTRY}}/${{env.IMAGE_NAME}}:latest"
           docker tag $local_tag $remote_tag
           docker push $remote_tag
       
