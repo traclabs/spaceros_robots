@@ -61,8 +61,10 @@ RUN source ${HOME_DIR}/extra_deps_ws/install/setup.bash &&  \
 
 # Build the demos workspace
 RUN source ${HOME_DIR}/extra_deps_ws/install/setup.bash && \
-    colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release
+    colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release && \
+    echo 'source ${HOME_DIR}/spaceros_robots_ws/install/setup.bash' >> ~/.bashrc
+        
 
-# Workdir
-WORKDIR ${HOME_DIR}/spaceros_robots_ws
-
+# Create an empty workdir so user can mount stuff if desired
+RUN mkdir -p ${HOME_DIR}/test_ws
+WORKDIR ${HOME_DIR}/test_ws
