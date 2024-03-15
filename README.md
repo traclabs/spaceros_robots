@@ -8,7 +8,7 @@ Pull the image:
 ```
 $ docker pull ghcr.io/traclabs/spaceros_robots:latest
 ```
-If you have trouble pulling the image, chances are, you are not logged in the ghcr.io registry (something Github requires to pull images from its packages). 
+If you have trouble pulling the image, chances are, you are not logged in the ghcr.io registry. Take a look at the end of this README for some instructions that might help. 
 
 Before starting
 ----------------
@@ -76,3 +76,24 @@ To start the canadarm demo
    $  ros2 service call /random_arm std_srvs/srv/Empty {} # Move arm to a random pose
    ```
    ![canadarm_gazebo](https://github.com/traclabs/spaceros_robots/blob/master/docs/images/canadarm_gazebo.png)
+
+
+
+Extra: Logging in the github's container registry:
+---------------------------------------------------
+
+In case you had trouble pulling the image, follow these steps:
+
+1. Create a personal access token (classic)
+    1. Open [New personal access token (classic)](https://github.com/settings/tokens/new)
+    2. Give your token a name (eg. "Read package token")
+    3. Select the "read:packages" scope.
+    4. Click on "Generate Token".
+    5. Copy the token (ie. ``ghp_.....``) and store it.
+2. Login to Github's container registry
+    1. Open a new terminal
+    2. Run "docker login ghcr.io -u my_github_username", replace ``my_github_username`` with your Github username.
+    3. When prompted for a password, enter the token you generated. (Don't enter your github password, it won't work.)
+3. Check if you can pull the docker image
+    1. Pull: ``docker pull ghcr.io/traclabs/spaceros_robots:latest``
+    
