@@ -58,6 +58,7 @@ To start the mars demo
    ```
    Instructions came from the README here: https://github.com/space-ros/docker/tree/main/space_robots
 
+   ![mars_rover_gazebo](https://github.com/traclabs/spaceros_robots/blob/master/docs/images/mars_rover_gazebo.png)
 
 To start the canadarm demo
 ---------------------------
@@ -74,3 +75,4 @@ To start the canadarm demo
    $  ros2 service call /close_arm std_srvs/srv/Empty {} # Arm back to tight pose
    $  ros2 service call /random_arm std_srvs/srv/Empty {} # Move arm to a random pose
    ```
+   ![canadarm_gazebo](https://github.com/traclabs/spaceros_robots/blob/master/docs/images/canadarm_gazebo.png)
