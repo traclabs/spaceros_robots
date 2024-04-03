@@ -30,8 +30,8 @@ repositories:
         
   simulation:
     type: git
-    url: https://github.com/traclabs/simulation.git
-    version: hotfix/fix_paths
+    url: https://github.com/space-ros/simulation.git
+    version: main
   demos:
     type: git
     url: https://github.com/space-ros/demos.git
